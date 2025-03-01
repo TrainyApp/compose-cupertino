@@ -23,11 +23,6 @@ plugins {
 subprojects {
     group = findProperty("group") as String
     version = findProperty("version") as String
-
-    repositories {
-        mavenCentral()
-        google()
-    }
 }
 
 dependencies {
