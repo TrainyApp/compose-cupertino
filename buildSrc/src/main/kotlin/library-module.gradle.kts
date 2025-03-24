@@ -1,14 +1,16 @@
-@file:OptIn(ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class)
+@file:OptIn(
+    ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class
+)
 
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.dokka.gradle.workers.ProcessIsolation
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
+import java.util.*
 
 plugins {
     com.android.library
@@ -120,8 +122,29 @@ dokka {
     }
 }
 
+publishing {
+    repositories {
+        maven("https://europe-west3-maven.pkg.dev/mik-music/trainyapp") {
+            credentials {
+                username = "_json_key_base64"
+                password = System.getenv("GOOGLE_KEY")?.toByteArray()?.let {
+                    Base64.getEncoder().encodeToString(it)
+                }
+            }
+
+            authentication {
+                create<BasicAuthentication>("basic")
+            }
+        }
+    }
+}
+
 mavenPublishing {
-    coordinates(groupId = "io.github.alexzhirkevich", artifactId = project.name, version = project.version.toString())
+    coordinates(
+        groupId = "com.trainyapp.cupertino",
+        artifactId = project.name,
+        version = project.version.toString()
+    )
     configure(
         KotlinMultiplatform(
             JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
@@ -129,9 +152,6 @@ mavenPublishing {
             androidVariantsToPublish = listOf("release")
         )
     )
-
-    publishToMavenCentral(SonatypeHost.S01)
-    signAllPublications()
 
     pom {
         name = project.name
