@@ -34,7 +34,7 @@ kotlin {
     wasmJs {
         binaries.executable()
 
-        moduleName = "webApp"
+        outputModuleName = "webApp"
         browser {
             commonWebpackConfig {
                 outputFileName = "webApp.js"
