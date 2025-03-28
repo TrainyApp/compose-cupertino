@@ -29,28 +29,16 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.offset
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.LayoutModifier
-import androidx.compose.ui.layout.Measurable
-import androidx.compose.ui.layout.MeasureResult
-import androidx.compose.ui.layout.MeasureScope
-import androidx.compose.ui.layout.OnRemeasuredModifier
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.InspectorValueInfo
 import androidx.compose.ui.platform.debugInspectorInfo
-import androidx.compose.ui.unit.Constraints
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
+import io.github.alexzhirkevich.cupertino.SwipeableV2State.Companion.Saver
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -167,7 +155,7 @@ internal fun <T> Modifier.swipeAnchors(
 internal class SwipeableV2State<T>(
     initialValue: T,
     internal val animationSpec: AnimationSpec<Float> = SwipeableV2Defaults.AnimationSpec,
-    internal val confirmValueChange: (newValue: T) -> Boolean = { true },
+    internal val confirmValueChange: CupertinoSheetStatePredicate<T> = { _, _ -> true },
     internal val positionalThreshold: Density.(totalDistance: Float) -> Float =
         SwipeableV2Defaults.PositionalThreshold,
     internal val velocityThreshold: Dp = SwipeableV2Defaults.VelocityThreshold,
@@ -386,7 +374,7 @@ internal class SwipeableV2State<T>(
             currentValue = previousValue,
             velocity = velocity
         )
-        if (confirmValueChange(targetValue)) {
+        if (confirmValueChange(previousValue, targetValue)) {
             animateTo(targetValue, velocity)
         } else {
             // If the user vetoed the state change, rollback to the previous state.
@@ -489,7 +477,7 @@ internal class SwipeableV2State<T>(
         
         fun <T : Any> Saver(
             animationSpec: AnimationSpec<Float>,
-            confirmValueChange: (T) -> Boolean,
+            confirmValueChange: CupertinoSheetStatePredicate<T>,
             positionalThreshold: Density.(distance: Float) -> Float,
             velocityThreshold: Dp
         ) = Saver<SwipeableV2State<T>, T>(
@@ -519,7 +507,7 @@ internal class SwipeableV2State<T>(
 internal fun <T : Any> rememberSwipeableV2State(
     initialValue: T,
     animationSpec: AnimationSpec<Float> = SwipeableV2Defaults.AnimationSpec,
-    confirmValueChange: (newValue: T) -> Boolean = { true }
+    confirmValueChange: CupertinoSheetStatePredicate<T> = { _, _ -> true }
 ): SwipeableV2State<T> {
     return rememberSaveable(
         initialValue, animationSpec, confirmValueChange,

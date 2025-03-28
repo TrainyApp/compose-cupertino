@@ -369,7 +369,7 @@ private fun StandardBottomSheet(
                                             CupertinoSheetValue.Expanded
                                         else states.toList()[currentIdx + 1]
 
-                                        if (swipeableState.confirmValueChange(next)) {
+                                        if (swipeableState.confirmValueChange(currentValue, next)) {
                                             expand("Expand") {
                                                 scope.launch {
                                                     if (next is CupertinoSheetValue.Expanded)
@@ -389,7 +389,7 @@ private fun StandardBottomSheet(
                                             CupertinoSheetValue.Hidden
                                         else states.toList()[currentIdx - 1]
 
-                                        if (swipeableState.confirmValueChange(next)) {
+                                        if (swipeableState.confirmValueChange(currentValue, next)) {
                                             collapse("Collapse") {
                                                 scope.launch {
                                                     if (next is CupertinoSheetValue.Hidden)
@@ -541,7 +541,7 @@ private fun BottomSheetScaffoldLayout(
                                 ?.dismissOnClickOutside == true
                         ) {
                             detectTapGestures {
-                                if (sheetState.confirmValueChange(CupertinoSheetValue.Hidden)) {
+                                if (sheetState.confirmValueChange(sheetState.currentValue, CupertinoSheetValue.Hidden)) {
                                     coroutineScope.launch {
                                         sheetState.hide()
                                     }

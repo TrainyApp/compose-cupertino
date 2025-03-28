@@ -18,25 +18,12 @@
 package io.github.alexzhirkevich.cupertino
 
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -50,13 +37,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import io.github.alexzhirkevich.LocalContentColor
+import io.github.alexzhirkevich.cupertino.CupertinoSheetState.Companion.Saver
 import io.github.alexzhirkevich.cupertino.theme.CupertinoTheme
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
@@ -375,7 +362,7 @@ sealed interface PresentationStyle {
 class CupertinoSheetState(
     initialValue: CupertinoSheetValue = CupertinoSheetValue.Hidden,
     internal val presentationStyle: PresentationStyle = PresentationStyle.Modal(),
-    internal val confirmValueChange: (CupertinoSheetValue) -> Boolean = { true },
+    internal val confirmValueChange: CupertinoSheetStatePredicate<CupertinoSheetValue> = { _, _ -> true },
 ) {
     init {
         require(
@@ -552,7 +539,7 @@ class CupertinoSheetState(
          */
         fun Saver(
             presentationStyle: PresentationStyle = PresentationStyle.Modal(),
-            confirmValueChange: (CupertinoSheetValue) -> Boolean,
+            confirmValueChange: CupertinoSheetStatePredicate<CupertinoSheetValue>,
         ) = Saver<CupertinoSheetState, String>(
             save = { Json.encodeToString(it.swipeableState.currentValue) },
             restore = { savedValue ->
@@ -565,11 +552,14 @@ class CupertinoSheetState(
         )
     }
 }
+
+typealias CupertinoSheetStatePredicate<T> = (current: T, target: T) -> Boolean
+
 @Composable
 fun rememberCupertinoSheetState(
     initialValue: CupertinoSheetValue = CupertinoSheetValue.Hidden,
     presentationStyle: PresentationStyle = PresentationStyle.Modal(),
-    confirmValueChange: (CupertinoSheetValue) -> Boolean = { true },
+    confirmValueChange: CupertinoSheetStatePredicate<CupertinoSheetValue> = { _, _ -> true },
 ): CupertinoSheetState {
 
     val updatedConfirm by rememberUpdatedState(confirmValueChange)
@@ -578,16 +568,12 @@ fun rememberCupertinoSheetState(
         presentationStyle,
         saver = CupertinoSheetState.Saver(
             presentationStyle = presentationStyle,
-            confirmValueChange = {
-                updatedConfirm.invoke(it)
-            }
+            confirmValueChange = updatedConfirm
         )
     ) {
         CupertinoSheetState(
             initialValue = initialValue,
-            confirmValueChange = {
-                updatedConfirm.invoke(it)
-            },
+            confirmValueChange = updatedConfirm,
             presentationStyle = presentationStyle
         )
     }

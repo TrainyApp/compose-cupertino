@@ -26,6 +26,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -90,6 +91,56 @@ fun AdaptiveButton(
                 size = it.size,
                 contentPadding = it.contentPadding ?: it.size.contentPadding,
                 shape =  it.shape ?: it.size.shape(CupertinoTheme.shapes),
+                colors = it.colors
+            )
+        }
+    )
+}
+
+@Composable
+fun AdaptiveSecondaryButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    border: BorderStroke? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    adaptation: AdaptationScope<CupertinoButtonAdaptation, MaterialButtonAdaptation>.() -> Unit = {},
+    content: @Composable() (RowScope.() -> Unit)
+) {
+    AdaptiveWidget(
+        adaptation = remember {
+            ButtonAdaptation(type = ButtonType.Filled).apply {
+                cupertino {
+                    colors = CupertinoButtonDefaults.grayButtonColors()
+                }
+            }
+        },
+        adaptationScope = adaptation,
+        material = {
+            OutlinedButton(
+                onClick = onClick,
+                modifier = modifier,
+                enabled = enabled,
+                border = border,
+                interactionSource = interactionSource,
+                content = content,
+                contentPadding = it.contentPadding,
+                shape = it.shape,
+                colors = it.colors,
+                elevation = it.elevation
+            )
+        },
+        cupertino = {
+            CupertinoButton(
+                onClick = onClick,
+                modifier = modifier,
+                enabled = enabled,
+                border = border,
+                interactionSource = interactionSource,
+                content = content,
+                size = it.size,
+                contentPadding = it.contentPadding ?: it.size.contentPadding,
+                shape = it.shape ?: it.size.shape(CupertinoTheme.shapes),
                 colors = it.colors
             )
         }
