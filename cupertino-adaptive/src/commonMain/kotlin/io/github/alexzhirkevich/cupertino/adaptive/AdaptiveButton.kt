@@ -21,29 +21,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ButtonElevation
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import io.github.alexzhirkevich.cupertino.CupertinoButton
-import io.github.alexzhirkevich.cupertino.CupertinoButtonColors
-import io.github.alexzhirkevich.cupertino.CupertinoButtonDefaults
+import io.github.alexzhirkevich.cupertino.*
 import io.github.alexzhirkevich.cupertino.CupertinoButtonDefaults.filledButtonColors
 import io.github.alexzhirkevich.cupertino.CupertinoButtonDefaults.plainButtonColors
 import io.github.alexzhirkevich.cupertino.CupertinoButtonDefaults.tintedButtonColors
-import io.github.alexzhirkevich.cupertino.CupertinoButtonSize
-import io.github.alexzhirkevich.cupertino.ExperimentalCupertinoApi
 import io.github.alexzhirkevich.cupertino.theme.CupertinoTheme
 
 /**
@@ -102,7 +87,6 @@ fun AdaptiveSecondaryButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     adaptation: AdaptationScope<CupertinoButtonAdaptation, MaterialButtonAdaptation>.() -> Unit = {},
     content: @Composable() (RowScope.() -> Unit)
@@ -113,6 +97,10 @@ fun AdaptiveSecondaryButton(
                 cupertino {
                     colors = CupertinoButtonDefaults.grayButtonColors()
                 }
+                material {
+                    shape = ButtonDefaults.outlinedShape
+                    colors = ButtonDefaults.outlinedButtonColors()
+                }
             }
         },
         adaptationScope = adaptation,
@@ -121,10 +109,10 @@ fun AdaptiveSecondaryButton(
                 onClick = onClick,
                 modifier = modifier,
                 enabled = enabled,
-                border = border,
                 interactionSource = interactionSource,
                 content = content,
                 contentPadding = it.contentPadding,
+                border = ButtonDefaults.outlinedButtonBorder(enabled),
                 shape = it.shape,
                 colors = it.colors,
                 elevation = it.elevation
@@ -135,7 +123,6 @@ fun AdaptiveSecondaryButton(
                 onClick = onClick,
                 modifier = modifier,
                 enabled = enabled,
-                border = border,
                 interactionSource = interactionSource,
                 content = content,
                 size = it.size,
