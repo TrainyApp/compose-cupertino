@@ -80,6 +80,7 @@ kotlin {
                 implementation(compose.material)
                 implementation(compose.material3)
                 implementation(libs.datetime)
+                implementation(libs.material.icons.core)
                 implementation(libs.serialization)
             }
         }

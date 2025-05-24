@@ -1,14 +1,14 @@
 [versions]
-agp = "8.9.0"
-kotlin = "2.1.20"
-compose = "1.8.0-rc01"
+agp = "8.11.0-alpha09"
+kotlin = "2.1.21"
+compose = "1.8.1"
 androidx-appcompat = "1.7.0"
-activity-compose = "1.11.0-rc01"
+activity-compose = "1.12.0-alpha01"
 datetime = "0.6.2"
-material-kolor = "2.0.2"
-decompose = "3.3.0"
+material-kolor = "3.0.0-beta01"
+decompose = "3.4.0-alpha01"
 essenty = "2.5.0"
-serialization = "1.8.0"
+serialization = "1.8.1"
 atomicfu = "0.27.0"
 #maven-publish="0.25.3"li
 
@@ -24,9 +24,11 @@ serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", v
 atomicfuPlugin= { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "atomicfu" }
 atomicfu= { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
 
+material-icons-core = { group = "org.jetbrains.compose.material", name = "material-icons-core", version = "1.7.3" }
+
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
-vanniktech-maven-publish-plugin = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version = "0.30.0" }
+vanniktech-maven-publish-plugin = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version = "0.32.0" }
 dokka-gradle-plugin = { group = "org.jetbrains.dokka", name = "org.jetbrains.dokka.gradle.plugin", version = "2.0.0" }
 
 [plugins]
