@@ -17,7 +17,9 @@
 
 package io.github.alexzhirkevich.cupertino.adaptive
 
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialExpressiveTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme as materialLightColorScheme
@@ -59,6 +61,7 @@ enum class Theme {
  * @param cupertino [CupertinoTheme] specification
  * @param content themed content
  * */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @ExperimentalAdaptiveApi
 @Composable
 fun AdaptiveTheme(
@@ -74,7 +77,7 @@ fun AdaptiveTheme(
     ) {
         when (LocalTheme.current) {
             Theme.Cupertino -> {
-                MaterialTheme(
+                MaterialExpressiveTheme(
                     colorScheme = material.colorScheme,
                     shapes = material.shapes,
                     typography = material.typography
@@ -94,7 +97,7 @@ fun AdaptiveTheme(
                     shapes = cupertino.shapes,
                     typography = cupertino.typography
                 ) {
-                    MaterialTheme(
+                    MaterialExpressiveTheme(
                         colorScheme = material.colorScheme,
                         shapes = material.shapes,
                         typography = material.typography,
