@@ -23,7 +23,7 @@ import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
-import kotlin.time.toInstant
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 actual typealias CalendarLocale = Locale
