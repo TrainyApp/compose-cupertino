@@ -19,11 +19,11 @@ package io.github.alexzhirkevich
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.text.intl.Locale
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
-import kotlinx.datetime.toInstant
+import kotlin.time.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.js.Date
 

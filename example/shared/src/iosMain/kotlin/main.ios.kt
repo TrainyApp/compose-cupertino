@@ -34,7 +34,6 @@ fun MainViewController(component: RootComponent) : UIViewController {
     return ComposeUIViewController(
         configure = {
             onFocusBehavior = OnFocusBehavior.DoNothing
-            platformLayers = false
         }
     ) {
 

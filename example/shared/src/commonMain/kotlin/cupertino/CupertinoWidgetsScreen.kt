@@ -182,10 +182,11 @@ import io.github.alexzhirkevich.cupertino.theme.systemOrange
 import io.github.alexzhirkevich.cupertino.theme.systemPurple
 import io.github.alexzhirkevich.cupertino.theme.systemRed
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.reflect.KClass
+import kotlin.time.ExperimentalTime
 
 private enum class PickerTab {
     Picker, Time, Date, DateTime
@@ -387,6 +388,7 @@ private fun Body(
     }
 }
 
+@OptIn(ExperimentalTime::class)
 @Composable
 private fun PickersSection(
     nativePickers: MutableState<Boolean>

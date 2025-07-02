@@ -19,7 +19,7 @@ package io.github.alexzhirkevich
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toNSTimeZone
 import platform.Foundation.NSCalendar

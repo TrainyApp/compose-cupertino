@@ -17,9 +17,9 @@
 
 package io.github.alexzhirkevich
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.DatePeriod
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.Month
@@ -27,6 +27,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
 import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
@@ -38,8 +39,8 @@ internal class CalendarModelImpl : CalendarModel {
             val localDate = Clock.System.now().toLocalDateTime(systemTZ)
             return CalendarDate(
                 year = localDate.year,
-                month = localDate.monthNumber,
-                dayOfMonth = localDate.dayOfMonth,
+                month = localDate.month.number,
+                dayOfMonth = localDate.day,
                 utcTimeMillis = localDate.date
                     .atTime(Midnight)
                     .toInstant(TimeZone.UTC)
@@ -87,8 +88,8 @@ internal class CalendarModelImpl : CalendarModel {
     override fun getMonth(year: Int, month: Int): CalendarMonth {
         val instant = LocalDate(
             year = year,
-            monthNumber = month,
-            dayOfMonth = 1,
+            month = month,
+            day = 1,
         ).atTime(Midnight)
             .toInstant(TimeZone.UTC)
 
@@ -109,8 +110,8 @@ internal class CalendarModelImpl : CalendarModel {
     override fun getDayOfWeek(date: CalendarDate): Int {
         return LocalDate(
             year = date.year,
-            monthNumber = date.month,
-            dayOfMonth = date.dayOfMonth
+            month = date.month,
+            day = date.dayOfMonth
         ).dayOfWeek.isoDayNumber
     }
 
@@ -150,12 +151,12 @@ internal class CalendarModelImpl : CalendarModel {
         val monthStart = LocalDate(
             year = dateTime.year,
             month = dateTime.month,
-            dayOfMonth = 1,
+            day = 1,
         )
 
         return CalendarMonth(
             year = dateTime.year,
-            month = dateTime.monthNumber,
+            month = dateTime.month.number,
             numberOfDays = dateTime.month
                 .numberOfDays(dateTime.year.isLeapYear()),
             daysFromStartOfWeekToFirstOfMonth = monthStart
@@ -179,8 +180,8 @@ internal fun Instant.toCalendarDate(
 
     return CalendarDate(
         year = dateTime.year,
-        month = dateTime.monthNumber,
-        dayOfMonth = dateTime.dayOfMonth,
+        month = dateTime.month.number,
+        dayOfMonth = dateTime.day,
         utcTimeMillis = toEpochMilliseconds()
     )
 }
