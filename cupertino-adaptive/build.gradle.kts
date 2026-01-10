@@ -1,4 +1,6 @@
-import org.jetbrains.compose.compose
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
     `library-module`
@@ -7,17 +9,15 @@ plugins {
 }
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            api(projects.cupertino)
-            api(projects.cupertinoNative)
-            implementation(projects.cupertinoCore)
-            api(compose.material3)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.materialIconsExtended)
-            implementation(compose("org.jetbrains.compose.ui:ui-util"))
-        }
+    dependencies {
+        api(projects.cupertino)
+        api(projects.cupertinoNative)
+        implementation(projects.cupertinoCore)
+        api(libs.compose.material3)
+        implementation(libs.compose.runtime)
+        implementation(libs.compose.foundation)
+        implementation(libs.compose.material.icons.extended)
+        implementation(libs.compose.uiutil)
     }
 
     compilerOptions {

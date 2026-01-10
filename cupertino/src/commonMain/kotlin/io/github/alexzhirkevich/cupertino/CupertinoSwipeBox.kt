@@ -49,7 +49,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Measurable
@@ -951,7 +950,7 @@ private class MapDraggableAnchorsStep(
     private val state: CupertinoSwipeBoxState
 ) : DraggableAnchors<CupertinoSwipeBoxValue> {
 
-    override fun positionOf(value: CupertinoSwipeBoxValue): Float = anchors[value] ?: Float.NaN
+    override fun positionOf(anchor: CupertinoSwipeBoxValue): Float = anchors[anchor] ?: Float.NaN
     override fun hasPositionFor(anchor: CupertinoSwipeBoxValue): Boolean = anchors.containsKey(anchor)
     override fun positionAt(index: Int): Float = anchors.values.toList()[index]
     override fun anchorAt(index: Int): CupertinoSwipeBoxValue = anchors.keys.toList()[index]

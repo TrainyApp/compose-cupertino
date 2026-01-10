@@ -20,9 +20,7 @@ package io.github.alexzhirkevich.cupertino.adaptive.icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import io.github.alexzhirkevich.cupertino.icons.CupertinoIcons
-import io.github.alexzhirkevich.cupertino.named
+import io.github.alexzhirkevich.cupertino.namedOrNull
 
 @Composable
-internal actual fun systemImage(name : String) : Painter? {
-    return runCatching { CupertinoIcons.named(name) }.getOrNull()
-}
+internal actual fun systemImage(name : String) : Painter? = CupertinoIcons.namedOrNull(name)

@@ -333,8 +333,6 @@ private fun StandardBottomSheet(
                         (sheetSize.height - height ).coerceAtLeast(0f)
                     }
                     is CupertinoSheetValue.Hidden -> layoutHeight
-
-                    else -> null
                 }
             },
         shape = shape,

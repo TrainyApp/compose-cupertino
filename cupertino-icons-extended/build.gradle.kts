@@ -7,7 +7,7 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(compose.ui)
+            implementation(libs.compose.ui)
             api(projects.cupertinoCore)
             implementation(projects.cupertino)
         }

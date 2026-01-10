@@ -40,9 +40,12 @@ import platform.posix.memcpy
  * @see <a href="https://developer.apple.com/sf-symbols/">SF Symbols</a>
  * */
 @Composable
-fun CupertinoIcons.named(systemName : String) : Painter {
+fun CupertinoIcons.named(systemName : String) : Painter = namedOrNull(systemName) ?: error("Image with name $systemName not found")
+
+@Composable
+fun CupertinoIcons.namedOrNull(systemName : String) : Painter? {
     return remember(systemName) {
-        BitmapPainter(ImageBitmap.systemImage(systemName))
+        runCatching { BitmapPainter(ImageBitmap.systemImage(systemName)) }.getOrNull()
     }
 }
 

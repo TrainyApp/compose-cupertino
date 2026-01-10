@@ -2,6 +2,8 @@
     ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class
 )
 
+import com.android.build.api.dsl.androidLibrary
+import com.android.build.api.variant.impl.KotlinMultiplatformAndroidCompilationImpl
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.dokka.gradle.workers.ProcessIsolation
@@ -10,16 +12,21 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.HasConfigurableKotlinCompilerOptions
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
+import org.jetbrains.kotlin.gradle.plugin.KotlinHierarchyBuilder
 import java.util.*
 
 plugins {
-    com.android.library
     org.jetbrains.kotlin.multiplatform
+    com.android.kotlin.multiplatform.library
     org.jetbrains.dokka
     id("com.vanniktech.maven.publish.base")
 }
 
 val _jvmTarget = findProperty("jvmTarget") as String
+
+fun KotlinHierarchyBuilder.withAndroidLibrary(){
+    withCompilations { it is KotlinMultiplatformAndroidCompilationImpl }
+}
 
 kotlin {
     applyDefaultHierarchyTemplate {
@@ -33,7 +40,7 @@ kotlin {
             group("nonIos") {
                 withMacos()
                 withJvm()
-                withAndroidTarget()
+                withAndroidLibrary()
                 withJs()
                 withWasmJs()
             }
@@ -43,14 +50,24 @@ kotlin {
             }
 
             group("jvm") {
-                withAndroidTarget()
+                withAndroidLibrary()
                 withJvm()
             }
         }
     }
 
     jvm("desktop")
-    androidTarget()
+    androidLibrary {
+        //noinspection WrongGradleMethod
+        namespace = "io.github.alexzhirkevich.${name.filter { it.isLetter() }}"
+        compileSdk = (findProperty("android.compileSdk") as String).toInt()
+
+        minSdk { release((findProperty("android.minSdk") as String).toInt()) }
+
+        compilerOptions {
+            jvmTarget = JvmTarget.fromTarget(_jvmTarget)
+        }
+    }
 
     targets.configureEach {
         if (this is HasConfigurableKotlinCompilerOptions<*>) {
@@ -79,19 +96,6 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
         optIn.add("kotlin.time.ExperimentalTime")
-    }
-}
-
-android {
-    namespace = "io.github.alexzhirkevich.${name.filter { it.isLetter() }}"
-    compileSdk = (findProperty("android.compileSdk") as String).toInt()
-
-    defaultConfig {
-        minSdk = (findProperty("android.minSdk") as String).toInt()
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(_jvmTarget)
-        targetCompatibility = JavaVersion.toVersion(_jvmTarget)
     }
 }
 
@@ -149,8 +153,7 @@ mavenPublishing {
     configure(
         KotlinMultiplatform(
             JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
-            sourcesJar = true,
-            androidVariantsToPublish = listOf("release")
+            sourcesJar = true
         )
     )
 

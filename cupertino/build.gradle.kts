@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     `library-module`
     alias(libs.plugins.serialization)
@@ -6,20 +10,16 @@ plugins {
 }
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            api(projects.cupertinoCore)
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.uiUtil)
-            implementation(libs.datetime)
-            implementation(libs.atomicfu)
-            implementation(libs.serialization)
-        }
-        skikoMain.dependencies {
-
-        }
+    dependencies {
+        api(projects.cupertinoCore)
+        implementation(libs.compose.runtime)
+        implementation(libs.compose.foundation)
+        implementation(libs.compose.uiutil)
+        implementation(libs.datetime)
+        implementation(libs.atomicfu)
+        implementation(libs.serialization)
     }
+
 }
 
 mavenPublishing {

@@ -1,15 +1,15 @@
 [versions]
-agp = "8.11.0-alpha09"
-kotlin = "2.2.0"
-compose = "1.9.0-alpha02"
+agp = "8.13.2"
+kotlin = "2.3.0"
+compose = "1.11.0-alpha01"
 androidx-appcompat = "1.7.1"
-activity-compose = "1.12.0-alpha02"
-datetime = "0.7.0"
-material-kolor = "3.0.0-beta01"
-decompose = "3.4.0-alpha01"
+activity-compose = "1.12.2"
+datetime = "0.7.1"
+material-kolor = "5.0.0-alpha04"
+decompose = "3.4.0"
 essenty = "2.5.0"
-serialization = "1.9.0"
-atomicfu = "0.27.0"
+serialization = "1.10.0-RC"
+atomicfu = "0.30.0-beta"
 #maven-publish="0.25.3"li
 
 [libraries]
@@ -26,10 +26,19 @@ atomicfu= { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" 
 
 material-icons-core = { group = "org.jetbrains.compose.material", name = "material-icons-core", version = "1.7.3" }
 
+compose-runtime = { group="org.jetbrains.compose.runtime", name="runtime", version.ref="compose" }
+compose-foundation = { group="org.jetbrains.compose.foundation", name="foundation", version.ref="compose" }
+compose-ui = { group="org.jetbrains.compose.ui", name="ui", version.ref="compose" }
+compose-uiutil = { group="org.jetbrains.compose.ui", name="ui-util", version.ref="compose" }
+compose-animation = { group="org.jetbrains.compose.animation", name="animation", version.ref="compose" }
+compose-material = { group="org.jetbrains.compose.material", name="material", version.ref="compose" }
+compose-material3 = { group="org.jetbrains.compose.material3", name="material3", version.ref="compose" }
+compose-material-icons-extended = { group="org.jetbrains.compose.material", name="material-icons-extended", version = "1.7.3" }
+
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
-vanniktech-maven-publish-plugin = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version = "0.32.0" }
-dokka-gradle-plugin = { group = "org.jetbrains.dokka", name = "org.jetbrains.dokka.gradle.plugin", version = "2.0.0" }
+vanniktech-maven-publish-plugin = { group = "com.vanniktech", name = "gradle-maven-publish-plugin", version = "0.35.0" }
+dokka-gradle-plugin = { group = "org.jetbrains.dokka", name = "org.jetbrains.dokka.gradle.plugin", version = "2.1.0" }
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

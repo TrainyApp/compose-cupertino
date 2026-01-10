@@ -1,3 +1,7 @@
+@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     `library-module`
     alias(libs.plugins.composeJB)
@@ -5,11 +9,9 @@ plugins {
 }
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-        }
+    dependencies {
+        implementation(libs.compose.runtime)
+        implementation(libs.compose.foundation)
     }
 }
 

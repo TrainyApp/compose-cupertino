@@ -14,12 +14,13 @@
  *  limitations under the License.
  *
  */
+import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    com.android.library
     org.jetbrains.kotlin.multiplatform
+    com.android.kotlin.multiplatform.library
     alias(libs.plugins.composeJB)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.serialization)
@@ -31,7 +32,13 @@ kotlin {
 
     applyDefaultHierarchyTemplate()
 
-    androidTarget {
+    androidLibrary {
+        namespace = "com.example.shared"
+        compileSdk = (findProperty("android.compileSdk") as String).toInt()
+
+        minSdk {
+            release((findProperty("android.minSdk") as String).toInt())
+        }
         compilerOptions {
             jvmTarget = JvmTarget.fromTarget(_jvmTarget)
         }
@@ -74,11 +81,11 @@ kotlin {
                 api(libs.decompose.core)
                 api(libs.essenty)
                 implementation(libs.decompose.compose)
-                implementation(compose.runtime)
-                implementation(compose.ui)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.material3)
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material)
+                implementation(libs.compose.material3)
                 implementation(libs.datetime)
                 implementation(libs.material.icons.core)
                 implementation(libs.serialization)
@@ -87,18 +94,5 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.activity.compose)
         }
-    }
-}
-
-android {
-    namespace = "com.example.shared"
-    compileSdk = (findProperty("android.compileSdk") as String).toInt()
-
-    defaultConfig {
-        minSdk = (findProperty("android.minSdk") as String).toInt()
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(_jvmTarget)
-        targetCompatibility = JavaVersion.toVersion(_jvmTarget)
     }
 }
