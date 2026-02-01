@@ -46,7 +46,7 @@ import androidx.compose.material3.LocalContentColor as MaterialLocalContentColor
 import androidx.compose.material3.LocalTextStyle as MaterialLocalTextStyle
 
 enum class Theme {
-    Cupertino, Material3
+    LiquidGlass, Cupertino, Material3
 }
 
 /**
@@ -68,6 +68,7 @@ fun AdaptiveTheme(
     target: Theme = DefaultTheme,
     material: MaterialThemeSpec = MaterialThemeSpec.Default(),
     cupertino: CupertinoThemeSpec = CupertinoThemeSpec.Default(),
+    liquidGlass: CupertinoThemeSpec = cupertino,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
@@ -96,6 +97,21 @@ fun AdaptiveTheme(
                     colorScheme = cupertino.colorScheme,
                     shapes = cupertino.shapes,
                     typography = cupertino.typography
+                ) {
+                    MaterialExpressiveTheme(
+                        colorScheme = material.colorScheme,
+                        shapes = material.shapes,
+                        typography = material.typography,
+                        content = content
+                    )
+                }
+            }
+
+            Theme.LiquidGlass -> {
+                CupertinoTheme(
+                    colorScheme = liquidGlass.colorScheme,
+                    shapes = liquidGlass.shapes,
+                    typography = liquidGlass.typography,
                 ) {
                     MaterialExpressiveTheme(
                         colorScheme = material.colorScheme,
@@ -142,6 +158,7 @@ fun AdaptiveTheme(
     cupertino: @Composable (content: @Composable () -> Unit) -> Unit = {
         CupertinoTheme(content = it)
     },
+    liquidClass: @Composable (content: @Composable () -> Unit) -> Unit = cupertino,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
@@ -160,6 +177,9 @@ fun AdaptiveTheme(
                 cupertino {
                     material(content)
                 }
+            }
+            Theme.LiquidGlass -> liquidClass {
+                cupertino(content)
             }
         }
     }
@@ -235,7 +255,7 @@ val currentTheme : Theme
     @Composable
     get() = LocalTheme.current
 
-internal expect val DefaultTheme : Theme
+expect val DefaultTheme : Theme
 
 internal val LocalTheme = staticCompositionLocalOf<Theme> {
     error("Adaptive theme is not provided. Please add AdaptiveTheme { } to the root of your composable hierarchy")
