@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    org.jetbrains.kotlin.android
     com.android.application
     alias(libs.plugins.composeJB)
     alias(libs.plugins.composeCompiler)
