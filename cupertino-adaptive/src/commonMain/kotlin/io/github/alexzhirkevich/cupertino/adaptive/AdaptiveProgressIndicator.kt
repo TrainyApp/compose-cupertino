@@ -23,6 +23,8 @@ import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.CircularWavyProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
@@ -39,7 +41,7 @@ import io.github.alexzhirkevich.cupertino.CupertinoActivityIndicator
 import io.github.alexzhirkevich.cupertino.CupertinoActivityIndicatorDefaults
 import io.github.alexzhirkevich.cupertino.ExperimentalCupertinoApi
 
-@OptIn(ExperimentalCupertinoApi::class)
+@OptIn(ExperimentalCupertinoApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @ExperimentalAdaptiveApi
 @Composable
 fun AdaptiveCircularProgressIndicator(
@@ -53,12 +55,10 @@ fun AdaptiveCircularProgressIndicator(
         adaptation = remember { ProgressIndicatorAdaptation() },
         adaptationScope = adaptationScope,
         material = {
-            CircularProgressIndicator(
+            CircularWavyProgressIndicator(
                 modifier = modifier,
                 color = it.color,
-                strokeWidth = it.strokeWidth,
                 trackColor = it.trackColor,
-                strokeCap = it.strokeCap
             )
         },
         cupertino = {
