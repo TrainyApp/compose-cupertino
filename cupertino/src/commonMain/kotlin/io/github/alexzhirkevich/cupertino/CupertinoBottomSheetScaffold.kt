@@ -71,7 +71,6 @@ import io.github.alexzhirkevich.cupertino.theme.CupertinoColors
 import io.github.alexzhirkevich.cupertino.theme.CupertinoTheme
 import io.github.alexzhirkevich.cupertino.theme.DefaultAlpha
 import kotlinx.coroutines.launch
-import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
@@ -120,12 +119,14 @@ fun CupertinoBottomSheetScaffold(
     appBarsBlurAlpha: Float = CupertinoScaffoldDefaults.AppBarsBlurAlpha,
     appBarsBlurRadius: Dp = CupertinoScaffoldDefaults.AppBarsBlurRadius,
     hasNavigationTitle: Boolean = false,
+    sheetHorizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
     content: @Composable (PaddingValues) -> Unit
 ) {
     BottomSheetScaffoldLayout(
         appBarsBlurAlpha = appBarsBlurAlpha,
         appBarsBlurRadius = appBarsBlurRadius,
         hasNavigationTitle = hasNavigationTitle,
+        sheetHorizontalAlignment = sheetHorizontalAlignment,
         modifier = modifier,
         topBar = topBar,
         bottomBar = bottomBar,
@@ -425,6 +426,7 @@ private fun BottomSheetScaffoldLayout(
     appBarsBlurAlpha: Float = CupertinoScaffoldDefaults.AppBarsBlurAlpha,
     appBarsBlurRadius: Dp = CupertinoScaffoldDefaults.AppBarsBlurRadius,
     hasNavigationTitle: Boolean = false,
+    sheetHorizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
 ) {
 
     val density = LocalDensity.current
@@ -561,7 +563,9 @@ private fun BottomSheetScaffoldLayout(
                 bottomSheet(layoutHeight)
             }[0].measure(looseConstraints)
             val sheetOffsetY = sheetOffset().roundToInt()
-            val sheetOffsetX = max(0, (layoutWidth - sheetPlaceable.width) / 2)
+            val sheetOffsetX = sheetHorizontalAlignment.align(
+                sheetPlaceable.width, layoutWidth, layoutDirection
+            )
             sheetHeight = layoutHeight
             layout(layoutWidth, layoutHeight) {
                 sheetPlaceable.placeRelative(sheetOffsetX, sheetOffsetY)

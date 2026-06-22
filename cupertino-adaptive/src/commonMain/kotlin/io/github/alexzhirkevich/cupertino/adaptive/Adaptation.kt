@@ -20,7 +20,6 @@ package io.github.alexzhirkevich.cupertino.adaptive
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
@@ -82,17 +81,14 @@ abstract class Adaptation<C, M> : AdaptationScope<C,M> {
     @Composable
     protected abstract fun rememberMaterialAdaptation(): M
 
+    // ponytail: don't key on lambda identity. The user-supplied cupertino/material block is
+    // typically a fresh lambda per recomposition (captures locals), and key-ing on it caused
+    // the entire adaptation state (incl. bottom-sheet swipe anchors) to be discarded each pass.
     @Composable
-    internal fun rememberUpdatedCupertinoAdaptation(): C {
-        return key(cupertino) {
-            rememberCupertinoAdaptation().apply { cupertino() }
-        }
-    }
+    internal fun rememberUpdatedCupertinoAdaptation(): C =
+        rememberCupertinoAdaptation().apply { cupertino() }
 
     @Composable
-    internal fun rememberUpdatedMaterialAdaptation(): M {
-        return key(material) {
-            rememberMaterialAdaptation().apply { material() }
-        }
-    }
+    internal fun rememberUpdatedMaterialAdaptation(): M =
+        rememberMaterialAdaptation().apply { material() }
 }

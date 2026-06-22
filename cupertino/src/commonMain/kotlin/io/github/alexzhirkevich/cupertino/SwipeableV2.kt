@@ -653,6 +653,10 @@ private class SwipeAnchorsModifier(
             lastFontScale = fontScale
         }
         val placeable = measurable.measure(constraints)
+        // ponytail: also fire from measure(), not just onRemeasured(). onRemeasured skips
+        // when the size is unchanged; if the SwipeableV2State was reset (e.g. parent re-keyed
+        // by an adaptation lambda flip) its anchors are empty and would never be re-populated.
+        onSizeChanged(IntSize(placeable.width, placeable.height))
         return layout(placeable.width, placeable.height) { placeable.place(0, 0) }
     }
 
