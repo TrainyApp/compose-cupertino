@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    org.jetbrains.kotlin.android
     com.android.application
     alias(libs.plugins.composeJB)
     alias(libs.plugins.composeCompiler)
@@ -26,12 +25,13 @@ android {
         sourceCompatibility = JavaVersion.toVersion(_jvmTarget)
         targetCompatibility = JavaVersion.toVersion(_jvmTarget)
     }
-    dependencies {
-        implementation(projects.example.shared)
+}
 
-        implementation(libs.androidx.appcompat)
-        implementation(libs.activity.compose)
-    }
+dependencies {
+    implementation(projects.example.shared)
+
+    implementation(libs.androidx.appcompat)
+    implementation(libs.activity.compose)
 }
 
 kotlin {

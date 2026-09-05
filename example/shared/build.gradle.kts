@@ -14,7 +14,6 @@
  *  limitations under the License.
  *
  */
-import com.android.build.api.dsl.androidLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -32,7 +31,7 @@ kotlin {
 
     applyDefaultHierarchyTemplate()
 
-    androidLibrary {
+    android {
         namespace = "com.example.shared"
         compileSdk = (findProperty("android.compileSdk") as String).toInt()
 
@@ -45,7 +44,7 @@ kotlin {
     }
 
     jvm("desktop")
-    js(IR) {
+    js {
         browser()
     }
     @OptIn(ExperimentalWasmDsl::class)
@@ -53,11 +52,7 @@ kotlin {
         browser()
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
+    listOf(iosArm64(), iosSimulatorArm64()).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "shared"
             isStatic = true

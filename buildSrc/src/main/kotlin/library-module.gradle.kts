@@ -2,7 +2,6 @@
     ExperimentalWasmDsl::class, ExperimentalKotlinGradlePluginApi::class
 )
 
-import com.android.build.api.dsl.androidLibrary
 import com.android.build.api.variant.impl.KotlinMultiplatformAndroidCompilationImpl
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
@@ -57,12 +56,12 @@ kotlin {
     }
 
     jvm("desktop")
-    androidLibrary {
+    android {
         //noinspection WrongGradleMethod
         namespace = "io.github.alexzhirkevich.${name.filter { it.isLetter() }}"
         compileSdk = (findProperty("android.compileSdk") as String).toInt()
 
-        minSdk { release((findProperty("android.minSdk") as String).toInt()) }
+        minSdk { version = release((findProperty("android.minSdk") as String).toInt()) }
 
         compilerOptions {
             jvmTarget = JvmTarget.fromTarget(_jvmTarget)
@@ -79,7 +78,7 @@ kotlin {
         }
     }
 
-    js(IR) {
+    js {
         browser()
     }
 
@@ -88,9 +87,7 @@ kotlin {
     }
 
     iosArm64()
-    iosX64()
     iosSimulatorArm64()
-    macosX64()
     macosArm64()
 
     compilerOptions {
@@ -151,10 +148,7 @@ mavenPublishing {
         version = project.version.toString()
     )
     configure(
-        KotlinMultiplatform(
-            JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
-            sourcesJar = true
-        )
+        KotlinMultiplatform(JavadocJar.Dokka("dokkaGeneratePublicationHtml"))
     )
 
     pom {
